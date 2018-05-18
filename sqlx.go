@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/jmoiron/sqlx/reflectx"
 )
 
@@ -263,7 +264,7 @@ func (db *DB) DriverName() string {
 
 // Open is the same as sql.Open, but returns an *sqlx.DB instead.
 func Open(driverName, dataSourceName string) (*DB, error) {
-	db, err := sql.Open(driverName, dataSourceName)
+	db, err := xray.SQL(driverName, dataSourceName)
 	if err != nil {
 		return nil, err
 	}
